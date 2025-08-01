@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="animations.css">
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -26,16 +26,30 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        document.getElementById("userEmail").innerText = user.email;
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          document.getElementById("rewardPoints").innerText = userDoc.data().rewardPoints || 0;
+    window.addEventListener("DOMContentLoaded", () => {
+      const profileBtn = document.getElementById("profileBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          document.getElementById("userEmail").innerText = user.email;
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            document.getElementById("rewardPoints").innerText = userDoc.data().rewardPoints || 0;
+          }
+          profileBtn.style.display = "inline";
+          logoutBtn.style.display = "inline";
+        } else {
+          profileBtn.style.display = "none";
+          logoutBtn.style.display = "none";
+          window.location.href = "index.html";
         }
-      } else {
+      });
+
+      logoutBtn?.addEventListener("click", async () => {
+        await signOut(auth);
         window.location.href = "index.html";
-      }
+      });
     });
   </script>
   <style>
@@ -46,6 +60,8 @@
     .card img.bg-photo { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 0; }
     .card-content { position: relative; z-index: 1; }
     h1, h2, h3, p { color: white; }
+    button { background: #ff6600; border: none; padding: 12px 25px; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
+    button:hover { background: #e65c00; }
   </style>
 </head>
 <body>
@@ -56,13 +72,15 @@
         <a href="index.html">Home</a>
         <a href="menu.html">Menu</a>
         <a href="contact.html">Contact</a>
+        <a href="profile.html" id="profileBtn" style="display:none;">View Profile</a>
+        <button id="logoutBtn" style="display:none;">Logout</button>
       </nav>
     </div>
   </header>
 
   <main>
     <div class="card">
-      <img class="bg-photo" src="assets/StuffedCheeseburger2.webp.jpeg" alt="Profile Background">
+      <img class="bg-photo" src="assets/StuffedCheeseburger2.webp.jpeg" alt="Profile Background" onerror="this.style.display='none'">
       <div class="card-content">
         <h1>Your Profile</h1>
         <p><strong>Email:</strong> <span id="userEmail"></span></p>
