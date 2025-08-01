@@ -1,7 +1,12 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+// We’ll move Firebase logic and form handling into index.js and link it across all HTML pages.
 
+// Example structure for index.js:
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
   authDomain: "loadedbitesorders.firebaseapp.com",
@@ -13,112 +18,102 @@ const firebaseConfig = {
   measurementId: "G-W8Y81CPLX7"
 };
 
+// Init
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-window.addEventListener('DOMContentLoaded', () => {
-  const profileLink = document.getElementById('profileLink');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const loginLink = document.getElementById('loginLink');
-  const registerForm = document.getElementById('registerForm');
-  const loginForm = document.getElementById('loginForm');
-  const forgotPasswordForm = document.getElementById('forgotPasswordForm');
-  const forgotPasswordToggle = document.getElementById('forgotPasswordToggle');
-  const closeForgot = document.getElementById('closeForgot');
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      profileLink.style.display = 'inline-block';
-      logoutBtn.style.display = 'inline-block';
-      loginLink.style.display = 'none';
-    } else {
-      profileLink.style.display = 'none';
-      logoutBtn.style.display = 'none';
-      loginLink.style.display = 'inline-block';
+// Handle register
+const registerForm = document.getElementById('registerForm');
+if (registerForm) {
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
     }
-
-    if (!user && window.location.hash === '#order') {
-      alert('You must be logged in to place an order. Redirecting to login.');
-      window.location.hash = '#login';
-    }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, "users", userCredential.user.uid), { email, rewardPoints: 0, createdAt: serverTimestamp() });
+      registerForm.reset();
+      document.getElementById('successMessage').innerText = "Account created successfully!";
+      document.getElementById('successMessage').style.display = 'block';
+    } catch (error) { alert(error.message); }
   });
+}
 
-  if (registerForm) {
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('registerEmail').value;
-      const password = document.getElementById('registerPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
+// Handle login
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      loginForm.reset();
+      document.getElementById('successMessage').innerText = `Welcome back, ${email}!`;
+      document.getElementById('successMessage').style.display = 'block';
+    } catch (error) { alert(error.message); }
+  });
+}
 
-      if (password !== confirmPassword) {
-        alert('Passwords do not match. Please try again.');
-        return;
-      }
+// Forgot password
+const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+if (forgotPasswordForm) {
+  forgotPasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('forgotEmail').value;
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent!");
+    } catch (error) { alert(error.message); }
+  });
+}
 
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await setDoc(doc(db, 'users', userCredential.user.uid), {
-          email: email,
-          rewards: 0
-        });
-        alert('Account created successfully! You can now log in.');
-        window.location.hash = '#login';
-      } catch (error) {
-        alert(error.message);
-      }
-    });
-  }
+// Place order
+const orderForm = document.getElementById('orderForm');
+if (orderForm) {
+  orderForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const item = document.getElementById('item').value;
+    const pickupTime = document.getElementById('pickupTime').value;
+    try {
+      await addDoc(collection(db, "orders"), { item, pickupTime, createdAt: serverTimestamp() });
+      orderForm.reset();
+      document.getElementById('orderMessage').innerText = "✅ Order placed successfully!";
+    } catch (error) { alert(error.message); }
+  });
+}
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.hash = '#hero';
-      } catch (error) {
-        alert(error.message);
-      }
-    });
-  }
-
-  if (forgotPasswordForm) {
-    forgotPasswordForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('forgotEmail').value;
-      try {
-        await sendPasswordResetEmail(auth, email);
-        alert('Password reset link sent! Check your email.');
-      } catch (error) {
-        alert(error.message);
-      }
-    });
-  }
-
-  if (forgotPasswordToggle) {
-    forgotPasswordToggle.addEventListener('click', () => {
-      forgotPasswordForm.style.display = 'block';
-    });
-  }
-
-  if (closeForgot) {
-    closeForgot.addEventListener('click', () => {
-      forgotPasswordForm.style.display = 'none';
-    });
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      signOut(auth).then(() => {
-        const banner = document.getElementById('logoutBanner');
-        banner.style.display = 'block';
-        setTimeout(() => {
-          banner.style.display = 'none';
-          window.location.hash = '#hero';
-        }, 3000);
-      });
-    });
+// Auth state changes
+onAuthStateChanged(auth, async (user) => {
+  const profileBtn = document.getElementById('profileBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (user) {
+    if (profileBtn) profileBtn.style.display = 'inline';
+    if (logoutBtn) logoutBtn.style.display = 'inline';
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (userDoc.exists()) {
+      const pointsElement = document.getElementById('rewardPoints');
+      if (pointsElement) pointsElement.innerText = userDoc.data().rewardPoints || 0;
+    }
+  } else {
+    if (profileBtn) profileBtn.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'none';
   }
 });
+
+// Logout
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.href = 'index.html';
+  });
+}
+
+// Each HTML page must include <script type="module" src="index.js"></script>
