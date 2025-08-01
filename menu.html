@@ -4,46 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loaded Bites | Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="animations.css">
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"></script>
-  <script type="module" src="index.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: url('assets/logo.png') no-repeat center center fixed;
-      background-size: cover;
-    }
-    .menu-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      padding: 20px;
-    }
-    .card {
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(12px);
-      border-radius: 15px;
-      padding: 20px;
-      color: #fff;
-      box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
+    body { margin:0; font-family:'Poppins',sans-serif; background:url('logo.png') no-repeat center center fixed; background-size:cover; }
+    header { position:fixed; top:0; left:0; width:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(10px); color:#fff; padding:15px; z-index:1000; text-align:center; }
+    nav a { color:#fff; margin:0 12px; text-decoration:none; font-weight:600; }
+    main { margin-top:140px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; padding:20px; }
+    .card { background:rgba(0,0,0,0.25); backdrop-filter:blur(15px); border-radius:15px; padding:20px; text-align:center; color:white; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
+    .card img { width:100%; border-radius:10px; margin-bottom:10px; }
   </style>
 </head>
 <body>
-  <header class="card" style="grid-column: 1 / -1;">
-    <a class="head-logo">Loaded<span>Bites</span></a>
+  <header>
+    <h1>Loaded Bites Menu</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="menu.html">Menu</a>
@@ -52,31 +26,21 @@
   </header>
 
   <main>
-    <h1 style="text-align:center; color:white;">Our Menu</h1>
-    <div class="menu-container">
-      <div class="card">
-        <img src="assets/hickory-burger.jpg" alt="Hickory Smoke Burger">
-        <h3>Hickory Smoke Burger</h3>
-        <p>Juicy beef patty infused with smoky hickory flavor and topped with melted cheese.</p>
-      </div>
-      <div class="card">
-        <img src="assets/bacon-onion-burger.jpg" alt="Bacon & Caramelized Onion Burger">
-        <h3>Bacon & Caramelized Onion Burger</h3>
-        <p>Loaded with crispy bacon, caramelized onions, and rich melted cheese.</p>
-      </div>
-      <div class="card">
-        <img src="assets/alfredo-fries.jpg" alt="Alfredo Chicken Loaded Fries">
-        <h3>Alfredo Chicken Loaded Fries</h3>
-        <p>Golden fries topped with creamy Alfredo sauce, grilled chicken, and cheese.</p>
-      </div>
-      <div class="card">
-        <img src="assets/stuffed-cheeseburger.jpg" alt="Classic Stuffed Cheeseburger">
-        <h3>Classic Stuffed Cheeseburger</h3>
-        <p>Cheese-filled beef patty served with fresh toppings on a toasted bun.</p>
-      </div>
+    <div class="card">
+      <img src="StuffedCheeseburger2.webp.jpeg" alt="Stuffed Cheeseburger">
+      <h3>Stuffed Cheeseburger</h3>
+    </div>
+    <div class="card">
+      <img src="cheese_stuffed_burgers_800x800.jpg" alt="Cheese Stuffed Burger">
+      <h3>Cheese Stuffed Burger</h3>
+    </div>
+    <div class="card">
+      <img src="chickenAlfredoLoadedfries.png.webp" alt="Chicken Alfredo Loaded Fries">
+      <h3>Chicken Alfredo Loaded Fries</h3>
     </div>
   </main>
-  <script type="module" src="index.js"></script>
 
+  <script type="module" src="index.js"></script>
 </body>
 </html>
+
