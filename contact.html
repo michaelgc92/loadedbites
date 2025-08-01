@@ -72,6 +72,8 @@
         <a href="index.html">Home</a>
         <a href="menu.html">Menu</a>
         <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+        <a href="order.html">Order</a>
       </nav>
     </div>
   </header>
@@ -90,26 +92,48 @@
         <p id="successMessage" style="display:none; color:#28a745; font-weight:bold;">✅ Your message has been sent successfully!</p>
       </div>
     </div>
+
+    <div class="card">
+      <img class="bg-photo" src="assets/cheese_stuffed_burgers_800x800.jpg" alt="Login Background">
+      <div class="card-content">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <input type="email" placeholder="Email" required>
+          <input type="password" placeholder="Password" required>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="bg-photo" src="assets/StuffedCheeseburger2.webp.jpeg" alt="Register Background">
+      <div class="card-content">
+        <h2>Create Account</h2>
+        <form id="registerForm">
+          <input type="email" placeholder="Email" required>
+          <input type="password" placeholder="Password" required>
+          <input type="password" placeholder="Confirm Password" required>
+          <button type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <img class="bg-photo" src="assets/chickenAlfredoLoadedfries.png.webp" alt="Order Background">
+      <div class="card-content">
+        <h2>Place Your Order</h2>
+        <form id="orderForm">
+          <select required>
+            <option value="Hickory Smoke Burger">Hickory Smoke Burger</option>
+            <option value="Bacon & Caramelized Onion Burger">Bacon & Caramelized Onion Burger</option>
+            <option value="Alfredo Chicken Loaded Fries">Alfredo Chicken Loaded Fries</option>
+            <option value="Classic Stuffed Cheeseburger">Classic Stuffed Cheeseburger</option>
+          </select>
+          <input type="time" required>
+          <button type="submit">Submit Order</button>
+        </form>
+      </div>
+    </div>
   </main>
-
-  <script>
-    const form = document.getElementById('contactForm');
-    const successMsg = document.getElementById('successMessage');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      successMsg.style.display = 'block';
-      successMsg.style.opacity = '1';
-      this.reset();
-
-      setTimeout(() => {
-        successMsg.style.opacity = '0';
-      }, 3000);
-
-      setTimeout(() => {
-        successMsg.style.display = 'none';
-      }, 4000);
-    });
-  </script>
 </body>
 </html>
