@@ -32,12 +32,8 @@
 
   <main>
     <div class="card">
-      <label for="formSelect"><strong>Choose Action:</strong></label>
-      <select id="formChoice">
-        <option value="login">Login</option>
-        <option value="signup">Sign Up</option>
-        <option value="forgot">Forgot Password</option>
-      </select>
+      <label for="formChoice"><strong>Choose Action:</strong></label>
+      <select id="formChoice"></select>
 
       <form id="loginForm" class="formOption">
         <h2>Login</h2>
@@ -65,12 +61,36 @@
   </main>
 
   <script type="module">
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { auth } from "./index.js";
+
     const formChoice = document.getElementById('formChoice');
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     const forgotForm = document.getElementById('forgotPasswordForm');
 
-    formChoice.addEventListener('change', () => {
+    // Switch dropdown based on auth state
+    onAuthStateChanged(auth, (user) => {
+      formChoice.innerHTML = "";
+      if (user) {
+        formChoice.innerHTML = `<option value="logout">Logout</option>`;
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'none';
+        forgotForm.style.display = 'none';
+      } else {
+        formChoice.innerHTML = `
+          <option value="login">Login</option>
+          <option value="signup">Sign Up</option>
+          <option value="forgot">Forgot Password</option>`;
+        loginForm.style.display = 'block';
+      }
+    });
+
+    formChoice.addEventListener('change', async () => {
+      if (formChoice.value === 'logout') {
+        await signOut(auth);
+        window.location.href = 'index.html';
+      }
       loginForm.style.display = formChoice.value === 'login' ? 'block' : 'none';
       registerForm.style.display = formChoice.value === 'signup' ? 'block' : 'none';
       forgotForm.style.display = formChoice.value === 'forgot' ? 'block' : 'none';
