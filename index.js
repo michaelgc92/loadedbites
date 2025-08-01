@@ -42,3 +42,28 @@ function sendOrderToSquare(order) {
   .then(data => console.log('Order sent to Square:', data))
   .catch(err => console.error(err));
 }
+
+
+function register(email, password) {
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => alert("Account created!"))
+    .catch(err => alert(err.message));
+}
+
+function login(email, password) {
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => alert("Logged in!"))
+    .catch(err => alert(err.message));
+}
+
+function placeOrder(item, price) {
+  db.collection("orders").add({
+    item: item,
+    price: price,
+    user: auth.currentUser.email,
+    timestamp: new Date()
+  })
+  .then(() => alert("Order placed!"))
+  .catch(err => alert(err.message));
+}
+
