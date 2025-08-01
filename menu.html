@@ -5,8 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loaded Bites | Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css">
-
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .card {
+      background: rgba(192,192,192,0.7); /* silver-gray with 70% transparency */
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 25px rgba(255,102,0,0.6); /* orange highlight */
+    }
+    .card h3 { margin: 10px 0 5px; }
+    .card p { font-size: 0.9rem; margin: 0; }
+  </style>
 </head>
 <body>
   <header>
@@ -15,6 +32,9 @@
       <a href="index.html">Home</a>
       <a href="menu.html">Menu</a>
       <a href="contact.html">Contact</a>
+      <a href="profile.html" id="profileBtn" style="display:none;">Profile</a>
+      <a href="login.html" id="loginBtn">Login / Sign Up</a>
+      <button id="logoutBtn" style="display:none;">Logout</button>
     </nav>
   </header>
 
@@ -22,14 +42,42 @@
     <div class="card">
       <img src="StuffedCheeseburger2.webp.jpeg" alt="Stuffed Cheeseburger">
       <h3>Stuffed Cheeseburger</h3>
+      <p>$10.99</p>
     </div>
     <div class="card">
       <img src="cheese_stuffed_burgers_800x800.jpg" alt="Cheese Stuffed Burger">
       <h3>Cheese Stuffed Burger</h3>
+      <p>$9.99</p>
     </div>
     <div class="card">
       <img src="chickenAlfredoLoadedfries.png.webp" alt="Chicken Alfredo Loaded Fries">
       <h3>Chicken Alfredo Loaded Fries</h3>
+      <p>$8.99</p>
+    </div>
+    <div class="card">
+      <img src="baconBurger.jpg" alt="Bacon Caramelized Onion Burger">
+      <h3>Bacon & Caramelized Onion Burger</h3>
+      <p>$11.49</p>
+    </div>
+    <div class="card">
+      <img src="hickoryBurger.jpg" alt="Hickory Smoke Burger">
+      <h3>Hickory Smoke Burger</h3>
+      <p>$11.99</p>
+    </div>
+    <div class="card">
+      <img src="classicFries.jpg" alt="Classic Loaded Fries">
+      <h3>Classic Loaded Fries</h3>
+      <p>$6.99</p>
+    </div>
+    <div class="card">
+      <img src="alfredoChickenFries.jpg" alt="Alfredo Chicken Fries">
+      <h3>Alfredo Chicken Fries</h3>
+      <p>$9.49</p>
+    </div>
+    <div class="card">
+      <img src="veggieBurger.jpg" alt="Veggie Stuffed Burger">
+      <h3>Veggie Stuffed Burger</h3>
+      <p>$9.49</p>
     </div>
   </main>
 
