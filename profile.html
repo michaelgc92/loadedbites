@@ -7,46 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-    .card {
-      background: rgba(192,192,192,0.7);
-      backdrop-filter: blur(15px);
-      border-radius: 15px;
-      padding: 20px;
-      text-align: center;
-      color: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      width: 400px;
-      margin: auto;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 25px rgba(255,102,0,0.6);
-    }
-    p { margin: 8px 0; }
-    .orders-card {
-      background: rgba(192,192,192,0.7);
-      backdrop-filter: blur(15px);
-      border-radius: 15px;
-      padding: 20px;
-      color: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      width: 90%;
-      margin: 30px auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      text-align: left;
-    }
-    th {
-      background: rgba(0,0,0,0.5);
-      font-weight: 700;
-    }
+    nav select#formSelect { width: auto; padding: 6px 12px; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -57,18 +18,16 @@
       <a href="menu.html">Menu</a>
       <a href="contact.html">Contact</a>
       <a href="profile.html" id="profileBtn" style="display:none;">Profile</a>
-      <a href="login.html" id="loginBtn">Login / Sign Up</a>
-      <button id="logoutBtn" style="display:none;">Logout</button>
+      <select id="formSelect"></select>
     </nav>
   </header>
 
   <main>
     <div class="card">
-      <img src="logo.png" alt="Loaded Bites Logo" style="width:150px; margin-bottom:15px;">
+      <img src="logo.png" alt="Loaded Bites Logo">
       <h2>Welcome Back!</h2>
       <p>Email: <span id="userEmail"></span></p>
       <p>Reward Points: <span id="rewardPoints">0</span></p>
-      <p id="successMessage" style="display:none; color:lime; margin-top:10px; font-weight:600;"></p>
     </div>
 
     <div class="orders-card">
@@ -81,35 +40,31 @@
             <th>Date</th>
           </tr>
         </thead>
-        <tbody id="orderHistory">
-          <!-- Orders will load here dynamically -->
-        </tbody>
+        <tbody id="orderHistory"></tbody>
       </table>
     </div>
 
     <div class="orders-card">
-  <h2>Place a New Order</h2>
-  <form id="newOrderForm">
-    <label for="orderItem">Select Item:</label>
-    <select id="orderItem" required>
-      <option value="Stuffed Cheeseburger">Stuffed Cheeseburger - $10.99</option>
-      <option value="Cheese Stuffed Burger">Cheese Stuffed Burger - $9.99</option>
-      <option value="Chicken Alfredo Loaded Fries">Chicken Alfredo Loaded Fries - $8.99</option>
-      <option value="Bacon & Caramelized Onion Burger">Bacon & Caramelized Onion Burger - $11.49</option>
-      <option value="Hickory Smoke Burger">Hickory Smoke Burger - $11.99</option>
-      <option value="Classic Loaded Fries">Classic Loaded Fries - $6.99</option>
-      <option value="Alfredo Chicken Fries">Alfredo Chicken Fries - $9.49</option>
-      <option value="Veggie Stuffed Burger">Veggie Stuffed Burger - $9.49</option>
-    </select>
+      <h2>Place a New Order</h2>
+      <form id="newOrderForm">
+        <label for="orderItem">Select Item:</label>
+        <select id="orderItem" required>
+          <option value="Stuffed Cheeseburger">Stuffed Cheeseburger - $10.99</option>
+          <option value="Cheese Stuffed Burger">Cheese Stuffed Burger - $9.99</option>
+          <option value="Chicken Alfredo Loaded Fries">Chicken Alfredo Loaded Fries - $8.99</option>
+          <option value="Bacon & Caramelized Onion Burger">Bacon & Caramelized Onion Burger - $11.49</option>
+          <option value="Hickory Smoke Burger">Hickory Smoke Burger - $11.99</option>
+          <option value="Classic Loaded Fries">Classic Loaded Fries - $6.99</option>
+          <option value="Alfredo Chicken Fries">Alfredo Chicken Fries - $9.49</option>
+          <option value="Veggie Stuffed Burger">Veggie Stuffed Burger - $9.49</option>
+        </select>
 
-    <label for="orderPickupTime">Pickup Time:</label>
-    <input type="time" id="orderPickupTime" required>
+        <label for="orderPickupTime">Pickup Time:</label>
+        <input type="time" id="orderPickupTime" required>
 
-    <button type="submit">Place Order</button>
-  </form>
-</div>
-
-    
+        <button type="submit">Place Order</button>
+      </form>
+    </div>
   </main>
 
   <script type="module" src="index.js"></script>
