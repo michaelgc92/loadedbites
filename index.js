@@ -1,9 +1,9 @@
-// index.js
+// admin.js - Admin Dashboard for Loaded Bites
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// Firebase config
+// Firebase config (reuse from index.js)
 const firebaseConfig = {
   apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
   authDomain: "loadedbitesorders.firebaseapp.com",
@@ -20,92 +20,48 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Dropdown Login/Logout setup
-const formSelect = document.getElementById('formSelect');
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
-const forgotForm = document.getElementById('forgotPasswordForm');
+// Elements
+const ordersTable = document.getElementById('adminOrders');
 
-onAuthStateChanged(auth, (user) => {
-  if (formSelect) {
-    formSelect.innerHTML = "";
-    if (user) {
-      formSelect.innerHTML = `<option value="logout">Logout</option>`;
-      if (loginForm) loginForm.style.display = 'none';
-      if (registerForm) registerForm.style.display = 'none';
-      if (forgotForm) forgotForm.style.display = 'none';
-    } else {
-      formSelect.innerHTML = `
-        <option value="login">Login</option>
-        <option value="signup">Sign Up</option>
-        <option value="forgot">Forgot Password</option>`;
-      if (loginForm) loginForm.style.display = 'block';
-    }
+// Only allow admin emails
+const adminEmails = ["loadedbitesfoodstand@gmail.com"];
+
+onAuthStateChanged(auth, async (user) => {
+  if (user && adminEmails.includes(user.email)) {
+    const querySnapshot = await getDocs(collection(db, "orders"));
+    ordersTable.innerHTML = "";
+    querySnapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${data.item}</td>
+        <td>${data.pickupTime}</td>
+        <td>${data.createdAt?.toDate().toLocaleString() || ''}</td>
+        <td>
+          <button class="completeBtn" data-id="${docSnap.id}">Complete</button>
+          <button class="deleteBtn" data-id="${docSnap.id}">Delete</button>
+        </td>
+      `;
+      ordersTable.appendChild(row);
+    });
+
+    // Handle Complete/Delete
+    document.querySelectorAll('.completeBtn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        await updateDoc(doc(db, "orders", btn.dataset.id), { status: "Completed" });
+        alert("Order marked as completed!");
+        location.reload();
+      });
+    });
+
+    document.querySelectorAll('.deleteBtn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        await deleteDoc(doc(db, "orders", btn.dataset.id));
+        alert("Order deleted!");
+        location.reload();
+      });
+    });
+  } else {
+    document.body.innerHTML = "<h2>Access Denied</h2><p>You must be an admin to view this page.</p>";
   }
 });
-
-if (formSelect) {
-  formSelect.addEventListener('change', async () => {
-    if (formSelect.value === 'logout') {
-      await signOut(auth);
-      window.location.href = 'index.html';
-    }
-    if (loginForm) loginForm.style.display = formSelect.value === 'login' ? 'block' : 'none';
-    if (registerForm) registerForm.style.display = formSelect.value === 'signup' ? 'block' : 'none';
-    if (forgotForm) forgotForm.style.display = formSelect.value === 'forgot' ? 'block' : 'none';
-  });
-}
-
-// Profile page: Load orders
-const orderHistory = document.getElementById('orderHistory');
-if (orderHistory) {
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      document.getElementById('userEmail').innerText = user.email;
-      const q = query(collection(db, "orders"), where("userId", "==", user.uid));
-      const querySnapshot = await getDocs(q);
-      orderHistory.innerHTML = "";
-      querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${data.item}</td>
-          <td>${data.pickupTime}</td>
-          <td>${data.createdAt?.toDate().toLocaleString() || ''}</td>
-        `;
-        orderHistory.appendChild(row);
-      });
-    }
-  });
-}
-
-// Profile page: Place new order
-const orderForm = document.getElementById('newOrderForm');
-if (orderForm) {
-  orderForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const item = document.getElementById('orderItem').value;
-    const pickupTime = document.getElementById('orderPickupTime').value;
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          await addDoc(collection(db, "orders"), {
-            userId: user.uid,
-            item,
-            pickupTime,
-            createdAt: serverTimestamp()
-          });
-          alert("✅ Order placed successfully!");
-          orderForm.reset();
-        } catch (err) {
-          alert("Error placing order: " + err.message);
-        }
-      } else {
-        alert("Please log in to place an order.");
-      }
-    });
-  });
-}
-
-export { auth, db };
