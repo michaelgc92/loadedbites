@@ -7,7 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-    nav select#formSelect { width: auto; padding: 6px 12px; font-size: 0.9rem; }
+    nav select#formSelect { width: auto; padding: 6px 12px; font-size: 0.9rem; border-radius: 6px;
+      background: rgba(192,192,192,0.7); color: #fff; font-weight:600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
   </style>
 </head>
 <body>
@@ -33,13 +35,7 @@
     <div class="orders-card">
       <h2>Your Order History</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Pickup Time</th>
-            <th>Date</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Item</th><th>Pickup Time</th><th>Date</th></tr></thead>
         <tbody id="orderHistory"></tbody>
       </table>
     </div>
@@ -58,10 +54,8 @@
           <option value="Alfredo Chicken Fries">Alfredo Chicken Fries - $9.49</option>
           <option value="Veggie Stuffed Burger">Veggie Stuffed Burger - $9.49</option>
         </select>
-
         <label for="orderPickupTime">Pickup Time:</label>
         <input type="time" id="orderPickupTime" required>
-
         <button type="submit">Place Order</button>
       </form>
     </div>
