@@ -39,10 +39,15 @@
           }
           profileBtn.style.display = "inline";
           logoutBtn.style.display = "inline";
+
+          // Clear login/register fields on success
+          const loginForm = document.getElementById("loginForm");
+          const registerForm = document.getElementById("registerForm");
+          if (loginForm) loginForm.reset();
+          if (registerForm) registerForm.reset();
         } else {
           profileBtn.style.display = "none";
           logoutBtn.style.display = "none";
-          window.location.href = "index.html";
         }
       });
 
