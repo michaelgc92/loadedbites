@@ -175,3 +175,61 @@ if (orderHistory) {
     }
   });
 }
+
+
+// Add this block to index.js to load order history in profile.html
+import { query, where, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const orderHistory = document.getElementById('orderHistory');
+const orderForm = document.getElementById('newOrderForm');
+
+if (orderHistory) {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      document.getElementById('userEmail').innerText = user.email;
+
+      // Query orders for this user
+      const q = query(collection(db, "orders"), where("userId", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+      orderHistory.innerHTML = ""; // Clear table
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${data.item}</td>
+          <td>${data.pickupTime}</td>
+          <td>${data.createdAt?.toDate().toLocaleString() || ''}</td>
+        `;
+        orderHistory.appendChild(row);
+      });
+    }
+  });
+}
+
+// Handle placing a new order from profile page
+if (orderForm) {
+  orderForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const item = document.getElementById('orderItem').value;
+    const pickupTime = document.getElementById('orderPickupTime').value;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          await addDoc(collection(db, "orders"), {
+            userId: user.uid,
+            item,
+            pickupTime,
+            createdAt: serverTimestamp()
+          });
+          alert("✅ Order placed successfully!");
+          orderForm.reset();
+        } catch (err) {
+          alert("Error placing order: " + err.message);
+        }
+      } else {
+        alert("Please log in to place an order.");
+      }
+    });
+  });
+}
