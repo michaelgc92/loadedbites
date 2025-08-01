@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loaded Bites | Profile</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="animations.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
+      authDomain: "loadedbitesorders.firebaseapp.com",
+      databaseURL: "https://loadedbitesorders-default-rtdb.firebaseio.com",
+      projectId: "loadedbitesorders",
+      storageBucket: "loadedbitesorders.firebasestorage.app",
+      messagingSenderId: "779273803973",
+      appId: "1:779273803973:web:3f117a784918631a39f8ac",
+      measurementId: "G-W8Y81CPLX7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        document.getElementById("userEmail").innerText = user.email;
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          document.getElementById("rewardPoints").innerText = userDoc.data().rewardPoints || 0;
+        }
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: url('assets/logo.png') no-repeat center center fixed; background-size: cover; }
+    header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; }
+    main { margin-top: 140px; display: flex; justify-content: center; padding: 20px; }
+    .card { background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(12px); border-radius: 15px; padding: 30px; color: #fff; box-shadow: 0px 4px 20px rgba(0,0,0,0.6); text-align: center; max-width: 500px; width: 100%; position: relative; overflow: hidden; }
+    .card img.bg-photo { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: 0; }
+    .card-content { position: relative; z-index: 1; }
+    h1, h2, h3, p { color: white; }
+  </style>
+</head>
+<body>
+  <header class="card">
+    <div class="card-content">
+      <a class="head-logo">Loaded<span>Bites</span></a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <img class="bg-photo" src="assets/StuffedCheeseburger2.webp.jpeg" alt="Profile Background">
+      <div class="card-content">
+        <h1>Your Profile</h1>
+        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        <p><strong>Reward Points:</strong> <span id="rewardPoints">0</span></p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
