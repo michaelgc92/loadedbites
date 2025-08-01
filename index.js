@@ -148,3 +148,30 @@ if (messagesTable) {
     }
   });
 }
+
+
+import { query, where } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const orderHistory = document.getElementById('orderHistory');
+if (orderHistory) {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      document.getElementById('userEmail').innerText = user.email;
+
+      // Query orders for this user
+      const q = query(collection(db, "orders"), where("userId", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+      orderHistory.innerHTML = ""; // Clear table
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${data.item}</td>
+          <td>${data.pickupTime}</td>
+          <td>${data.createdAt?.toDate().toLocaleString() || ''}</td>
+        `;
+        orderHistory.appendChild(row);
+      });
+    }
+  });
+}
