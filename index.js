@@ -137,4 +137,23 @@ if (contactForm) {
     }
   });
 }
+
+
+import { getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const messagesTable = document.getElementById('messagesTable');
+if (messagesTable) {
+  const querySnapshot = await getDocs(collection(db, "messages"));
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${data.name}</td>
+      <td>${data.email}</td>
+      <td>${data.message}</td>
+      <td>${data.createdAt?.toDate().toLocaleString() || ''}</td>
+    `;
+    messagesTable.appendChild(row);
+  });
+}
 // Each HTML page must include <script type="module" src="index.js"></script>
