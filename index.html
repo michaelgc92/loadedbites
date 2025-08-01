@@ -3,192 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <title>Loaded Bites</title>
   <link rel="stylesheet" href="index.css">
-<link rel="stylesheet" href="animations.css">
-  <img src="logo.png" alt="Loaded Bites Logo">
+  <link rel="stylesheet" href="animations.css">
   <style>
-    #forgotPasswordForm { 
-      display: none; 
-      margin-top: 15px; 
-      position: relative; 
-      padding: 15px; 
-      border: 1px solid #ccc; 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('assets/logo.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 20px;
+    }
+    .card {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      border-radius: 15px;
+      padding: 20px;
+      color: #fff;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    h1, h2, h3, p, label {
+      color: white;
+    }
+    header nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    header nav a:hover {
+      color: #ff6600;
+    }
+    input, select, textarea {
+      width: 90%;
+      margin: 10px auto;
+      padding: 12px;
+      border: none;
       border-radius: 8px;
-      background: #f9f9f9;
+      font-size: 1rem;
+      display: block;
     }
-    #forgotPasswordToggle { 
-      color: blue; 
-      text-decoration: underline; 
-      cursor: pointer; 
+    button {
+      background: #ff6600;
+      border: none;
+      padding: 12px 25px;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    #closeForgot { 
-      position: absolute; 
-      top: 8px; 
-      right: 10px; 
-      cursor: pointer; 
-      color: red; 
-      font-weight: bold; 
-      font-size: 18px;
+    button:hover {
+      background: #e65c00;
     }
   </style>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
-      authDomain: "loadedbitesorders.firebaseapp.com",
-      databaseURL: "https://loadedbitesorders-default-rtdb.firebaseio.com",
-      projectId: "loadedbitesorders",
-      storageBucket: "loadedbitesorders.firebasestorage.app",
-      messagingSenderId: "779273803973",
-      appId: "1:779273803973:web:3f117a784918631a39f8ac",
-      measurementId: "G-W8Y81CPLX7"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const profileLink = document.getElementById('profileLink');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const loginLink = document.getElementById('loginLink');
-      const registerForm = document.getElementById('registerForm');
-      const loginForm = document.getElementById('loginForm');
-      const forgotPasswordForm = document.getElementById('forgotPasswordForm');
-      const forgotPasswordToggle = document.getElementById('forgotPasswordToggle');
-      const closeForgot = document.getElementById('closeForgot');
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          profileLink.style.display = 'inline-block';
-          logoutBtn.style.display = 'inline-block';
-          loginLink.style.display = 'none';
-        } else {
-          profileLink.style.display = 'none';
-          logoutBtn.style.display = 'none';
-          loginLink.style.display = 'inline-block';
-        }
-
-        if (!user && window.location.hash === '#order') {
-          alert('You must be logged in to place an order. Redirecting to login.');
-          window.location.hash = '#login';
-        }
-      });
-
-      if (registerForm) {
-        registerForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const email = document.getElementById('registerEmail').value;
-          const password = document.getElementById('registerPassword').value;
-          const confirmPassword = document.getElementById('confirmPassword').value;
-
-          if (password !== confirmPassword) {
-            alert('Passwords do not match. Please try again.');
-            return;
-          }
-
-          try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            await setDoc(doc(db, 'users', userCredential.user.uid), {
-              email: email,
-              rewards: 0
-            });
-            alert('Account created successfully! You can now log in.');
-            window.location.hash = '#login';
-          } catch (error) {
-            alert(error.message);
-          }
-        });
-      }
-
-      if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const email = document.getElementById('loginEmail').value;
-          const password = document.getElementById('loginPassword').value;
-          try {
-            await signInWithEmailAndPassword(auth, email, password);
-            window.location.hash = '#hero';
-          } catch (error) {
-            alert(error.message);
-          }
-        });
-      }
-
-      if (forgotPasswordForm) {
-        forgotPasswordForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const email = document.getElementById('forgotEmail').value;
-          try {
-            await sendPasswordResetEmail(auth, email);
-            alert('Password reset link sent! Check your email.');
-          } catch (error) {
-            alert(error.message);
-          }
-        });
-      }
-
-      if (forgotPasswordToggle) {
-        forgotPasswordToggle.addEventListener('click', () => {
-          forgotPasswordForm.style.display = 'block';
-        });
-      }
-
-      if (closeForgot) {
-        closeForgot.addEventListener('click', () => {
-          forgotPasswordForm.style.display = 'none';
-        });
-      }
-
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-          signOut(auth).then(() => {
-            const banner = document.getElementById('logoutBanner');
-            banner.style.display = 'block';
-            setTimeout(() => {
-              banner.style.display = 'none';
-              window.location.hash = '#hero';
-            }, 3000);
-          });
-        });
-      }
-    });
-  </script>
+  <script type="module" src="index.js"></script>
 </head>
 <body>
-  <header>
+  <header class="card" style="grid-column: 1 / -1;">
     <a class="head-logo">Loaded<span>Bites</span></a>
     <nav>
-      <a class="nav-items" href="#hero">Home</a>
-      <a class="nav-items" href="#about">About</a>
-      <a class="nav-items" href="#menu">Menu</a>
-      <a class="nav-items" href="#contact">Contact</a>
-      <a class="nav-items" href="#order">Order</a>
-      <span id="authLinks">
-        <a id="loginLink" class="nav-items" href="#login" style="display:inline-block;">Login/Register</a>
-        <a id="profileLink" class="nav-items" href="#profile" style="display:none;">Profile</a>
-        <button id="logoutBtn" style="display:none;">Logout</button>
-      </span>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="contact.html">Contact</a>
+      <a href="#order">Order</a>
+      <a id="loginLink" href="#login">Login/Register</a>
+      <a id="profileLink" href="#profile" style="display:none;">Profile</a>
+      <button id="logoutBtn" style="display:none;">Logout</button>
     </nav>
   </header>
 
-  <div id="logoutBanner" style="display:none;background:#28a745;color:white;padding:10px;text-align:center;font-weight:bold;">You have logged out successfully.</div>
-
-  <section id="hero">
-    <div class="section-wrap">
-      <h1>Savory <span>Stuffed Burgers</span> & Loaded Fries</h1>
+  <main>
+    <section class="card">
+      <h1>Welcome to Loaded Bites</h1>
+      <p>Savory Stuffed Burgers & Loaded Fries</p>
       <h2>Join our rewards program for discounts & exclusive deals!</h2>
-    </div>
-  </section>
+    </section>
 
-  <!-- Register Section -->
-  <section id="register">
-    <div class="section-wrap">
+    <!-- Register Section -->
+    <section id="register" class="card">
       <h2>Create Account</h2>
       <form id="registerForm">
         <input type="email" id="registerEmail" placeholder="Email" required>
@@ -196,30 +95,26 @@
         <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
         <button type="submit">Register</button>
       </form>
-    </div>
-  </section>
+    </section>
 
-  <!-- Login Section -->
-  <section id="login">
-    <div class="section-wrap">
+    <!-- Login Section -->
+    <section id="login" class="card">
       <h2>Login</h2>
       <form id="loginForm">
         <input type="email" id="loginEmail" placeholder="Email" required>
         <input type="password" id="loginPassword" placeholder="Password" required>
         <button type="submit">Login</button>
       </form>
-      <p id="forgotPasswordToggle">Forgot Password?</p>
-      <form id="forgotPasswordForm">
-        <span id="closeForgot">✖</span>
+      <p id="forgotPasswordToggle" style="cursor:pointer; color:lightblue;">Forgot Password?</p>
+      <form id="forgotPasswordForm" style="display:none; position:relative;">
+        <span id="closeForgot" style="position:absolute; top:5px; right:10px; cursor:pointer; color:red; font-weight:bold;">✖</span>
         <input type="email" id="forgotEmail" placeholder="Enter your email" required>
         <button type="submit">Reset Password</button>
       </form>
-    </div>
-  </section>
+    </section>
 
-  <!-- Order Section -->
-  <section id="order">
-    <div class="section-wrap">
+    <!-- Order Section -->
+    <section id="order" class="card">
       <h2>Place Your Order</h2>
       <form id="orderForm">
         <label for="item">Choose Item:</label>
@@ -234,8 +129,7 @@
         <button type="submit">Submit Order</button>
       </form>
       <div id="orderMessage"></div>
-    </div>
-  </section>
-  <script type="module" src="index.js"></script>
+    </section>
+  </main>
 </body>
 </html>
