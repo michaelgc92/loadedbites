@@ -145,12 +145,15 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/fi
 const messagesTable = document.getElementById('messagesTable');
 const messagesTableContainer = document.getElementById('messagesTableContainer');
 const accessDenied = document.getElementById('accessDenied');
+const adminLink = document.getElementById('adminLink');
+const adminBadge = document.getElementById('adminBadge');
 
-if (messagesTable) {
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      // Only allow if email matches admin account
-      if (user.email === "loadedbitesfoodstand@gmail.com") {
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    if (user.email === "loadedbitesfoodstand@gmail.com") {
+      if (adminLink) adminLink.style.display = 'inline';
+      if (adminBadge) adminBadge.style.display = 'inline';
+      if (messagesTable) {
         messagesTableContainer.style.display = 'table';
         accessDenied.style.display = 'none';
         const querySnapshot = await getDocs(collection(db, "messages"));
@@ -165,13 +168,13 @@ if (messagesTable) {
           `;
           messagesTable.appendChild(row);
         });
-      } else {
-        accessDenied.style.display = 'block';
       }
     } else {
-      window.location.href = 'index.html';
+      if (messagesTable) accessDenied.style.display = 'block';
     }
-  });
-}
+  } else {
+    window.location.href = 'index.html';
+  }
+});
 
 // Each HTML page must include <script type="module" src="index.js"></script>
