@@ -3,12 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loaded Bites</title>
+  <title>Loaded Bites | Home</title>
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="animations.css">
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
+      authDomain: "loadedbitesorders.firebaseapp.com",
+      databaseURL: "https://loadedbitesorders-default-rtdb.firebaseio.com",
+      projectId: "loadedbitesorders",
+      storageBucket: "loadedbitesorders.firebasestorage.app",
+      messagingSenderId: "779273803973",
+      appId: "1:779273803973:web:3f117a784918631a39f8ac",
+      measurementId: "G-W8Y81CPLX7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+  </script>
   <script type="module" src="index.js"></script>
   <style>
     body {
@@ -17,7 +34,15 @@
       background: url('assets/logo.png') no-repeat center center fixed;
       background-size: cover;
     }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
     main {
+      margin-top: 140px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
@@ -51,15 +76,6 @@
     h1, h2, h3, p, label {
       color: white;
     }
-    header nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    header nav a:hover {
-      color: #ff6600;
-    }
     input, select, textarea {
       width: 90%;
       margin: 10px auto;
@@ -85,7 +101,7 @@
   </style>
 </head>
 <body>
-  <header class="card" style="grid-column: 1 / -1;">
+  <header class="card">
     <div class="card-content">
       <a class="head-logo">Loaded<span>Bites</span></a>
       <nav>
@@ -101,18 +117,17 @@
   </header>
 
   <main>
-    <section class="card">
-      <img class="bg-photo" src="assets/hero.jpg" alt="Hero Image">
+    <div class="card">
+      <img class="bg-photo" src="assets/cheese_stuffed_burgers_800x800.jpg" alt="Welcome Background">
       <div class="card-content">
         <h1>Welcome to Loaded Bites</h1>
         <p>Savory Stuffed Burgers & Loaded Fries</p>
         <h2>Join our rewards program for discounts & exclusive deals!</h2>
       </div>
-    </section>
+    </div>
 
-    <!-- Register Section -->
-    <section id="register" class="card">
-      <img class="bg-photo" src="assets/register.jpg" alt="Register Image">
+    <div id="register" class="card">
+      <img class="bg-photo" src="assets/StuffedCheeseburger2.webp.jpeg" alt="Register Background">
       <div class="card-content">
         <h2>Create Account</h2>
         <form id="registerForm">
@@ -122,11 +137,10 @@
           <button type="submit">Register</button>
         </form>
       </div>
-    </section>
+    </div>
 
-    <!-- Login Section -->
-    <section id="login" class="card">
-      <img class="bg-photo" src="assets/login.jpg" alt="Login Image">
+    <div id="login" class="card">
+      <img class="bg-photo" src="assets/cheese_stuffed_burgers_800x800.jpg" alt="Login Background">
       <div class="card-content">
         <h2>Login</h2>
         <form id="loginForm">
@@ -141,11 +155,10 @@
           <button type="submit">Reset Password</button>
         </form>
       </div>
-    </section>
+    </div>
 
-    <!-- Order Section -->
-    <section id="order" class="card">
-      <img class="bg-photo" src="assets/order.jpg" alt="Order Image">
+    <div id="order" class="card">
+      <img class="bg-photo" src="assets/chickenAlfredoLoadedfries.png.webp" alt="Order Background">
       <div class="card-content">
         <h2>Place Your Order</h2>
         <form id="orderForm">
@@ -162,7 +175,7 @@
         </form>
         <div id="orderMessage"></div>
       </div>
-    </section>
+    </div>
   </main>
 </body>
 </html>
