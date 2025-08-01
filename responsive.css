@@ -1,0 +1,4 @@
+@media (max-width: 768px) {
+  .hero-content { flex-direction: column; }
+  .main-text { font-size: 3rem; }
+}
