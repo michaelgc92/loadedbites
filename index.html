@@ -5,119 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loaded Bites</title>
   <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="animations.css">
-  <link rel="stylesheet" href="responsive.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
+      authDomain: "loadedbitesorders.firebaseapp.com",
+      databaseURL: "https://loadedbitesorders-default-rtdb.firebaseio.com",
+      projectId: "loadedbitesorders",
+      storageBucket: "loadedbitesorders.firebasestorage.app",
+      messagingSenderId: "779273803973",
+      appId: "1:779273803973:web:3f117a784918631a39f8ac",
+      measurementId: "G-W8Y81CPLX7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const orderForm = document.getElementById('orderForm');
+      const orderMessage = document.getElementById('orderMessage');
+
+      orderForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const item = document.getElementById('item').value;
+        const pickupTime = document.getElementById('pickupTime').value;
+
+        // Estimate preparation time: 20 minutes
+        const now = new Date();
+        const readyTime = new Date(now.getTime() + 20 * 60000);
+
+        // Save order to Firebase
+        push(ref(db, 'orders'), {
+          item: item,
+          pickupTime: pickupTime,
+          readyTime: readyTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+          timestamp: now.toISOString()
+        }).then(() => {
+          orderMessage.innerHTML = `<p>Thank you for ordering the <strong>${item}</strong>!<br>
+            Your order will be ready around <strong>${readyTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</strong>.<br>
+            Pickup time requested: ${pickupTime}</p>`;
+        }).catch(err => {
+          orderMessage.innerHTML = `<p style="color:red;">Error placing order: ${err.message}</p>`;
+        });
+      });
+    });
+  </script>
 </head>
 <body>
+  <header>
+    <a class="head-logo">Loaded<span>Bites</span></a>
+    <nav>
+      <a class="nav-items" href="#hero">Home</a>
+      <a class="nav-items" href="#about">About</a>
+      <a class="nav-items" href="#menu">Menu</a>
+      <a class="nav-items" href="#contact">Contact</a>
+      <a class="nav-items" href="#order">Order</a>
+    </nav>
+  </header>
+
   <section id="hero">
     <div class="section-wrap">
-      <header>
-        <a class="head-logo">Loaded<span>Bites</span></a>
-        <nav>
-          <a class="nav-items" href="#hero">Home</a>
-          <a class="nav-items" href="#about">About</a>
-          <a class="nav-items" href="#menu">Menu</a>
-          <a class="nav-items" href="#contact">Contact</a>
-        </nav>
-        <div class="header-cta">
-          <button class="header-cta-btn">Login</button>
-          <button class="header-cta-btn">Order</button>
-        </div>
-      </header>
-      <div class="hero-content">
-        <div class="left">
-          <h1 class="main-text">Savory <span>Stuffed Burgers</span> & Loaded Fries</h1>
-          <h2 class="sub-text">Join our rewards program for discounts & exclusive deals!</h2>
-          <div class="hero-cta">
-            <button class="hero-cta-btn-btn1">Register</button>
-            <button class="hero-cta-btn-btn1">Order Now</button>
-          </div>
-        </div>
-        <div class="right">
-          <img class="logo" src="Images/CHEFS.png" alt="Loaded Bites Logo">
-        </div>
-      </div>
+      <h1>Savory <span>Stuffed Burgers</span> & Loaded Fries</h1>
+      <h2>Join our rewards program for discounts & exclusive deals!</h2>
     </div>
   </section>
 
-  <section id="about">
+  <!-- Order Section -->
+  <section id="order">
     <div class="section-wrap">
-      <h2>About Loaded Bites</h2>
-      <p>Loaded Bites is your go-to food stand for gourmet cheese-stuffed burgers and loaded fries. Our mission is to bring you savory, creative meals packed with flavor and freshness.</p>
-      <img src="Images/about-loadedbites.jpg" alt="About Loaded Bites" style="max-width:600px; display:block; margin:20px auto; border-radius:20px;">
+      <h2>Place Your Order</h2>
+      <form id="orderForm">
+        <label for="item">Choose Item:</label>
+        <select id="item" required>
+          <option value="Hickory Smoke Burger">Hickory Smoke Burger</option>
+          <option value="Bacon & Caramelized Onion Burger">Bacon & Caramelized Onion Burger</option>
+          <option value="Alfredo Chicken Loaded Fries">Alfredo Chicken Loaded Fries</option>
+          <option value="Classic Stuffed Cheeseburger">Classic Stuffed Cheeseburger</option>
+        </select>
+
+        <label for="pickupTime">Preferred Pickup Time:</label>
+        <input type="time" id="pickupTime" required>
+
+        <button type="submit">Submit Order</button>
+      </form>
+
+      <div id="orderMessage"></div>
     </div>
   </section>
-
-  <section id="menu">
-    <div class="section-wrap">
-      <h2>Our Menu</h2>
-      <div class="menu-grid">
-        <div class="menu-item">
-          <img src="Images/mockups/hickory-burger.png" alt="Hickory Smoke Burger">
-          <h3>The Hickory Smoke Burger</h3>
-          <p>Stuffed with smoked cheddar, topped with BBQ glaze.</p>
-        </div>
-        <div class="menu-item">
-          <img src="Images/mockups/bacon-onion-burger.png" alt="Bacon & Caramelized Onion Burger">
-          <h3>Bacon & Caramelized Onion Burger</h3>
-          <p>Stuffed with Swiss, layered with crispy bacon & onions.</p>
-        </div>
-        <div class="menu-item">
-          <img src="Images/mockups/alfredo-fries.png" alt="Alfredo Chicken Loaded Fries">
-          <h3>Alfredo Chicken Loaded Fries</h3>
-          <p>Crispy fries smothered in creamy Alfredo with grilled chicken.</p>
-        </div>
-        <div class="menu-item">
-          <img src="Images/mockups/classic-burger.png" alt="Classic Stuffed Cheeseburger">
-          <h3>Classic Stuffed Cheeseburger</h3>
-          <p>Juicy patty stuffed with American cheese and topped with our signature sauce.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="section-wrap">
-      <h2>Contact Us</h2>
-      <p>Email: <a href="mailto:loadedbitesfoodstand@gmail.com">loadedbitesfoodstand@gmail.com</a></p>
-      <p>Phone: <a href="tel:2282903138">228-290-3138</a></p>
-      <p>Follow us on Instagram: <a href="https://instagram.com/loadedbitesfoodstand" target="_blank">@loadedbitesfoodstand</a></p>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-wrap">
-      <p>&copy; 2025 Loaded Bites | All Rights Reserved</p>
-      <div class="social-links">
-        <a href="https://instagram.com/loadedbitesfoodstand" target="_blank">Instagram</a>
-      </div>
-    </div>
-  </footer>
-  <script src="index.js"></script>
-
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
-    authDomain: "loadedbitesorders.firebaseapp.com",
-    databaseURL: "https://loadedbitesorders-default-rtdb.firebaseio.com",
-    projectId: "loadedbitesorders",
-    storageBucket: "loadedbitesorders.firebasestorage.app",
-    messagingSenderId: "779273803973",
-    appId: "1:779273803973:web:3f117a784918631a39f8ac",
-    measurementId: "G-W8Y81CPLX7"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
 </body>
 </html>
