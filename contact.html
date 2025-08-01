@@ -6,10 +6,6 @@
   <title>Loaded Bites | Contact</title>
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="animations.css">
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"></script>
-  <script type="module" src="index.js"></script>
   <style>
     body {
       margin: 0;
@@ -27,6 +23,22 @@
       color: #fff;
       box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card img.bg-photo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+      z-index: 0;
+    }
+    .card-content {
+      position: relative;
+      z-index: 1;
     }
     input, textarea {
       width: 90%;
@@ -37,28 +49,46 @@
       font-size: 1rem;
       display: block;
     }
+    button {
+      background: #ff6600;
+      border: none;
+      padding: 12px 25px;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #e65c00;
+    }
   </style>
 </head>
 <body>
   <header class="card" style="grid-column: 1 / -1;">
-    <a class="head-logo">Loaded<span>Bites</span></a>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="menu.html">Menu</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <div class="card-content">
+      <a class="head-logo">Loaded<span>Bites</span></a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
   </header>
 
   <main>
     <div class="card">
-      <h1>Contact Us</h1>
-      <form id="contactForm">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-      <p id="successMessage" style="display:none; color:#28a745; font-weight:bold;">✅ Your message has been sent successfully!</p>
+      <img class="bg-photo" src="assets/logo.png" alt="Loaded Bites Logo Background">
+      <div class="card-content">
+        <h1>Contact Us</h1>
+        <form id="contactForm">
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email" required>
+          <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+        <p id="successMessage" style="display:none; color:#28a745; font-weight:bold;">✅ Your message has been sent successfully!</p>
+      </div>
     </div>
   </main>
 
