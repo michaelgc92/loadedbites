@@ -233,3 +233,33 @@ if (orderForm) {
     });
   });
 }
+
+const formSelect = document.getElementById('formSelect');
+
+onAuthStateChanged(auth, (user) => {
+  if (formSelect) {
+    formSelect.innerHTML = ""; // Clear options
+    if (user) {
+      // User is logged in
+      formSelect.innerHTML = `<option value="logout">Logout</option>`;
+    } else {
+      // User is not logged in
+      formSelect.innerHTML = `
+        <option value="login">Login</option>
+        <option value="signup">Sign Up</option>
+        <option value="forgot">Forgot Password</option>`;
+    }
+  }
+});
+
+if (formSelect) {
+  formSelect.addEventListener('change', async () => {
+    if (formSelect.value === 'logout') {
+      await signOut(auth);
+      window.location.href = 'index.html';
+    }
+    loginForm.style.display = formSelect.value === 'login' ? 'block' : 'none';
+    registerForm.style.display = formSelect.value === 'signup' ? 'block' : 'none';
+    forgotForm.style.display = formSelect.value === 'forgot' ? 'block' : 'none';
+  });
+}
