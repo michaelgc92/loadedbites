@@ -1,0 +1,8 @@
+@keyframes bottomIn {
+  from { transform: translateY(200px); }
+  to { transform: translateY(0); opacity: 1; }
+}
+.main-text { animation: 1s bottomIn ease-out forwards; opacity: 0; }
+.sub-text { animation: 1.2s bottomIn ease-out forwards; opacity: 0; }
+.hero-cta { animation: 1.5s bottomIn ease-out forwards; opacity: 0; }
+.right img { animation: 1.5s bottomIn ease-out forwards; opacity: 0; }
