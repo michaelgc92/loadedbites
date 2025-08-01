@@ -116,4 +116,25 @@ if (logoutBtn) {
   });
 }
 
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('contactName').value;
+    const email = document.getElementById('contactEmail').value;
+    const message = document.getElementById('contactMessage').value;
+    try {
+      await addDoc(collection(db, "messages"), {
+        name,
+        email,
+        message,
+        createdAt: serverTimestamp()
+      });
+      contactForm.reset();
+      document.getElementById('contactSuccess').style.display = 'block';
+    } catch (error) {
+      alert("Error sending message: " + error.message);
+    }
+  });
+}
 // Each HTML page must include <script type="module" src="index.js"></script>
