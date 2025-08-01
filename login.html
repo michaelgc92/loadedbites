@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loaded Bites | Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    nav select#formSelect {
+      width: auto;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+    }
+    body { background: url('logo.png') no-repeat center center fixed; background-size: cover; }
+    .card { background: rgba(192,192,192,0.7); backdrop-filter: blur(15px); border-radius: 15px; padding: 30px; text-align: center; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.5); width: 400px; margin: 140px auto; }
+    input, select { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 8px; }
+    button { background:#ff6600; border:none; padding:12px; border-radius:8px; color:white; font-weight:600; cursor:pointer; }
+    button:hover { background:#e65c00; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Login / Sign Up</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="contact.html">Contact</a>
+      <select id="formSelect"></select>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card">
+      <label for="formSelect"><strong>Choose Action:</strong></label>
+      <select id="formChoice">
+        <option value="login">Login</option>
+        <option value="signup">Sign Up</option>
+        <option value="forgot">Forgot Password</option>
+      </select>
+
+      <form id="loginForm" class="formOption">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="formOption" style="display:none;">
+        <h2>Create Account</h2>
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <form id="forgotPasswordForm" class="formOption" style="display:none;">
+        <h2>Forgot Password</h2>
+        <input type="email" id="forgotEmail" placeholder="Enter your email" required>
+        <button type="submit">Reset Password</button>
+      </form>
+
+      <p id="successMessage" style="display:none; color:lime; margin-top:10px; font-weight:600;"></p>
+    </div>
+  </main>
+
+  <script type="module">
+    const formChoice = document.getElementById('formChoice');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const forgotForm = document.getElementById('forgotPasswordForm');
+
+    formChoice.addEventListener('change', () => {
+      loginForm.style.display = formChoice.value === 'login' ? 'block' : 'none';
+      registerForm.style.display = formChoice.value === 'signup' ? 'block' : 'none';
+      forgotForm.style.display = formChoice.value === 'forgot' ? 'block' : 'none';
+    });
+  </script>
+  <script type="module" src="index.js"></script>
+</body>
+</html>
