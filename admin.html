@@ -14,6 +14,7 @@
     table { width:90%; border-collapse:collapse; background:rgba(0,0,0,0.25); backdrop-filter:blur(15px); border-radius:15px; color:white; }
     th, td { padding:12px; border-bottom:1px solid rgba(255,255,255,0.2); text-align:left; }
     th { background:rgba(0,0,0,0.5); font-weight:700; }
+    #accessDenied { display:none; color:red; font-weight:600; margin-top:40px; }
   </style>
 </head>
 <body>
@@ -27,7 +28,8 @@
   </header>
 
   <main>
-    <table>
+    <p id="accessDenied">❌ Access Denied. You do not have permission to view this page.</p>
+    <table id="messagesTableContainer" style="display:none;">
       <thead>
         <tr>
           <th>Name</th>
