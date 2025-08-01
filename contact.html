@@ -4,138 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loaded Bites | Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="animations.css">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: url('assets/logo.png') no-repeat center center fixed;
-      background-size: cover;
-    }
-    .card {
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(12px);
-      border-radius: 15px;
-      padding: 20px;
-      max-width: 600px;
-      margin: 40px auto;
-      color: #fff;
-      box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .card img.bg-photo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.4;
-      z-index: 0;
-    }
-    .card-content {
-      position: relative;
-      z-index: 1;
-    }
-    input, textarea {
-      width: 90%;
-      margin: 10px auto;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      display: block;
-    }
-    button {
-      background: #ff6600;
-      border: none;
-      padding: 12px 25px;
-      color: #fff;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #e65c00;
-    }
-  </style>
 </head>
 <body>
-  <header class="card" style="grid-column: 1 / -1;">
-    <div class="card-content">
-      <a class="head-logo">Loaded<span>Bites</span></a>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="menu.html">Menu</a>
-        <a href="contact.html">Contact</a>
-        <a href="login.html">Login</a>
-        <a href="order.html">Order</a>
-      </nav>
-    </div>
+  <header>
+    <h1>Contact Loaded Bites</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="contact.html">Contact</a>
+    </nav>
   </header>
 
   <main>
     <div class="card">
-      <img class="bg-photo" src="assets/logo.png" alt="Loaded Bites Logo Background">
-      <div class="card-content">
-        <h1>Contact Us</h1>
-        <form id="contactForm">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
-          <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-          <button type="submit">Send Message</button>
-        </form>
-        <p id="successMessage" style="display:none; color:#28a745; font-weight:bold;">✅ Your message has been sent successfully!</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="bg-photo" src="assets/cheese_stuffed_burgers_800x800.jpg" alt="Login Background">
-      <div class="card-content">
-        <h2>Login</h2>
-        <form id="loginForm">
-          <input type="email" placeholder="Email" required>
-          <input type="password" placeholder="Password" required>
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="bg-photo" src="assets/StuffedCheeseburger2.webp.jpeg" alt="Register Background">
-      <div class="card-content">
-        <h2>Create Account</h2>
-        <form id="registerForm">
-          <input type="email" placeholder="Email" required>
-          <input type="password" placeholder="Password" required>
-          <input type="password" placeholder="Confirm Password" required>
-          <button type="submit">Register</button>
-        </form>
-      </div>
-    </div>
-
-    <div class="card">
-      <img class="bg-photo" src="assets/chickenAlfredoLoadedfries.png.webp" alt="Order Background">
-      <div class="card-content">
-        <h2>Place Your Order</h2>
-        <form id="orderForm">
-          <select required>
-            <option value="Hickory Smoke Burger">Hickory Smoke Burger</option>
-            <option value="Bacon & Caramelized Onion Burger">Bacon & Caramelized Onion Burger</option>
-            <option value="Alfredo Chicken Loaded Fries">Alfredo Chicken Loaded Fries</option>
-            <option value="Classic Stuffed Cheeseburger">Classic Stuffed Cheeseburger</option>
-          </select>
-          <input type="time" required>
-          <button type="submit">Submit Order</button>
-        </form>
-      </div>
+      <img src="logo.png" alt="Loaded Bites Logo">
+      <h2>Contact Us</h2>
+      <form id="contactForm">
+        <input type="text" id="contactName" placeholder="Your Name" required>
+        <input type="email" id="contactEmail" placeholder="Your Email" required>
+        <textarea id="contactMessage" placeholder="Write your message here" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <p>Email: loadedbitesfoodstand@gmail.com</p>
+      <p>Phone: 228-290-3138</p>
+      <p>Instagram: @loadedbitesfoodstand</p>
     </div>
   </main>
-  <script type="module" src="index.js"></script>
 
+  <script type="module" src="index.js"></script>
 </body>
 </html>
