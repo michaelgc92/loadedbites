@@ -20,3 +20,25 @@ window.addEventListener('DOMContentLoaded', () => {
     alert('Online ordering will be available shortly!');
   });
 });
+
+
+function sendOrderToSquare(order) {
+  fetch('https://connect.squareup.com/v2/orders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer YOUR_SQUARE_ACCESS_TOKEN'
+    },
+    body: JSON.stringify({
+      order: {
+        location_id: 'YOUR_LOCATION_ID',
+        line_items: [
+          { name: order.item, quantity: '1', base_price_money: { amount: 1000, currency: 'USD' }}
+        ]
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => console.log('Order sent to Square:', data))
+  .catch(err => console.error(err));
+}
