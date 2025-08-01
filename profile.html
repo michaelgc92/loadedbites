@@ -86,6 +86,30 @@
         </tbody>
       </table>
     </div>
+
+    <div class="orders-card">
+  <h2>Place a New Order</h2>
+  <form id="newOrderForm">
+    <label for="orderItem">Select Item:</label>
+    <select id="orderItem" required>
+      <option value="Stuffed Cheeseburger">Stuffed Cheeseburger - $10.99</option>
+      <option value="Cheese Stuffed Burger">Cheese Stuffed Burger - $9.99</option>
+      <option value="Chicken Alfredo Loaded Fries">Chicken Alfredo Loaded Fries - $8.99</option>
+      <option value="Bacon & Caramelized Onion Burger">Bacon & Caramelized Onion Burger - $11.49</option>
+      <option value="Hickory Smoke Burger">Hickory Smoke Burger - $11.99</option>
+      <option value="Classic Loaded Fries">Classic Loaded Fries - $6.99</option>
+      <option value="Alfredo Chicken Fries">Alfredo Chicken Fries - $9.49</option>
+      <option value="Veggie Stuffed Burger">Veggie Stuffed Burger - $9.49</option>
+    </select>
+
+    <label for="orderPickupTime">Pickup Time:</label>
+    <input type="time" id="orderPickupTime" required>
+
+    <button type="submit">Place Order</button>
+  </form>
+</div>
+
+    
   </main>
 
   <script type="module" src="index.js"></script>
