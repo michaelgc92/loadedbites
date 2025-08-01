@@ -29,6 +29,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       const profileBtn = document.getElementById("profileBtn");
       const logoutBtn = document.getElementById("logoutBtn");
+      const successMessage = document.getElementById("successMessage");
 
       onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -44,7 +45,16 @@
           const loginForm = document.getElementById("loginForm");
           const registerForm = document.getElementById("registerForm");
           if (loginForm) loginForm.reset();
-          if (registerForm) registerForm.reset();
+          if (registerForm) {
+            registerForm.reset();
+            if (successMessage) {
+              successMessage.style.display = "block";
+              successMessage.innerText = "Account created successfully!";
+            }
+          } else if (successMessage) {
+            successMessage.style.display = "block";
+            successMessage.innerText = `Welcome back, ${user.email}!`;
+          }
         } else {
           profileBtn.style.display = "none";
           logoutBtn.style.display = "none";
@@ -67,6 +77,7 @@
     h1, h2, h3, p { color: white; }
     button { background: #ff6600; border: none; padding: 12px 25px; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
     button:hover { background: #e65c00; }
+    #successMessage { display:none; background: rgba(0, 128, 0, 0.6); padding: 10px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -90,6 +101,7 @@
         <h1>Your Profile</h1>
         <p><strong>Email:</strong> <span id="userEmail"></span></p>
         <p><strong>Reward Points:</strong> <span id="rewardPoints">0</span></p>
+        <div id="successMessage"></div>
       </div>
     </div>
   </main>
