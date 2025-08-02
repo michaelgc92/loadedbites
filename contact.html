@@ -6,46 +6,40 @@
   <title>Loaded Bites | Contact</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    header {
-      background: rgba(0,0,0,0.7);
-      padding: 15px 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
+    header { background: rgba(0,0,0,0.7); padding: 15px 25px; display: flex; flex-direction: column; align-items: center; }
     header h1 { color: white; font-size: 1.8rem; margin-bottom: 10px; }
-    nav { display: flex; gap: 20px; align-items: center; }
+    nav { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; }
     nav a { color: white; font-weight:600; text-decoration: none; padding: 8px 12px; }
     nav a:hover { color: #ffcc66; }
 
-    .dropdown { position: relative; display: inline-block; }
-    .dropbtn {
-      background: rgba(255,102,0,0.7);
-      backdrop-filter: blur(12px);
-      color: white;
-      font-weight: 600;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-      transition: background 0.3s, transform 0.3s;
-    }
+    .dropdown { position: relative; }
+    .dropbtn { background: rgba(255,102,0,0.7); backdrop-filter: blur(12px); color: white; font-weight: 600; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: background 0.3s, transform 0.3s; }
     .dropbtn:hover { background: rgba(230,92,0,0.8); transform: translateY(-2px); }
     .dropdown-content { display: none; position: absolute; background: rgba(255,102,0,0.9); backdrop-filter: blur(12px); min-width: 180px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.6); z-index: 1; }
     .dropdown-content a { color: white; padding: 12px 16px; text-decoration: none; display: block; font-weight: 600; }
     .dropdown-content a:hover { background: rgba(230,92,0,0.9); border-radius: 10px; }
     .dropdown:hover .dropdown-content { display: block; }
 
-    main { display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .card { background: rgba(255,102,0,0.7); backdrop-filter: blur(15px); border-radius: 15px; padding: 40px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.5); width: 100%; max-width: 500px; text-align: center; }
+    .hamburger { display: none; flex-direction: column; cursor: pointer; margin-bottom: 10px; }
+    .hamburger span { background: white; height: 3px; width: 25px; margin: 4px 0; border-radius: 2px; }
+
+    @media (max-width: 768px) {
+      nav { display: none; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.9); padding: 20px; border-radius: 12px; position: absolute; top: 70px; left: 50%; transform: translateX(-50%); }
+      nav.active { display: flex; }
+      .hamburger { display: flex; }
+    }
+
+    main { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; gap: 30px; }
+    .card { background: rgba(255,102,0,0.7); backdrop-filter: blur(15px); border-radius: 15px; padding: 30px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.5); text-align: center; max-width: 500px; width: 100%; }
     .card h2 { margin-bottom: 20px; }
-    input, textarea { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; font-size: 1rem; }
-    button { width: 95%; background: rgba(255,102,0,0.9); border: none; padding: 12px; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: background 0.3s; }
-    button:hover { background: rgba(230,92,0,0.9); }
-    .socials { margin-top: 20px; }
+    .card form { display: flex; flex-direction: column; gap: 15px; }
+    .card input, .card textarea { padding: 12px; border: none; border-radius: 8px; font-size: 1rem; }
+    .card button { background: #ff6600; border: none; padding: 12px; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    .card button:hover { background: #e65c00; }
+
+    .socials { text-align: center; }
     .socials a { color: white; font-size: 28px; margin: 0 12px; transition: transform 0.3s, color 0.3s; }
     .socials a:hover { transform: scale(1.2); color: #ffcc66; }
   </style>
@@ -53,7 +47,12 @@
 <body>
   <header>
     <h1>Contact Loaded Bites</h1>
-    <nav>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav id="navMenu">
       <a href="index.html">Home</a>
       <a href="menu.html">Menu</a>
       <a href="contact.html">Contact</a>
@@ -78,12 +77,12 @@
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
         <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-        <button type="submit">Send</button>
+        <button type="submit">Send Message</button>
       </form>
-      <div class="socials">
-        <a href="https://instagram.com/loadedbitesfoodstand" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-      </div>
+    </div>
+    <div class="socials">
+      <a href="https://instagram.com/loadedbitesfoodstand" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
     </div>
   </main>
 
@@ -91,11 +90,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
-      authDomain: "loadedbitesorders.firebaseapp.com",
-      projectId: "loadedbitesorders"
-    };
+    const firebaseConfig = { apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs", authDomain: "loadedbitesorders.firebaseapp.com", projectId: "loadedbitesorders" };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -104,14 +99,16 @@
     const profileLink = document.getElementById('profileLink');
     const adminLink = document.getElementById('adminLink');
     const logoutBtn = document.getElementById('logoutBtn');
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+
+    hamburger.addEventListener('click', () => { navMenu.classList.toggle('active'); });
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         profileLink.style.display = 'inline-block';
         logoutBtn.style.display = 'inline-block';
-        if (adminEmails.includes(user.email)) {
-          adminLink.style.display = 'inline-block';
-        }
+        if (adminEmails.includes(user.email)) { adminLink.style.display = 'inline-block'; }
       } else {
         profileLink.style.display = 'none';
         adminLink.style.display = 'none';
@@ -126,6 +123,5 @@
       });
     }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </body>
 </html>
