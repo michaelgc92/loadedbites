@@ -7,9 +7,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <style>
-    nav select#formSelect { width: auto; padding: 6px 12px; font-size: 0.9rem; border-radius: 6px;
+    nav select#formSelect {
+      width: auto; padding: 6px 12px; font-size: 0.9rem; border-radius: 6px;
       background: rgba(192,192,192,0.7); color: #fff; font-weight:600;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    nav select#formSelect:focus { outline: none; box-shadow: 0 0 8px #ff6600; }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      background: rgba(255,102,0,0.7);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 30px;
+      color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+    .card img {
+      width: 120px;
+      margin-bottom: 15px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+    }
+    button {
+      background:#ff6600; border:none; padding:12px; border-radius:8px; color:white; font-weight:600; cursor:pointer; width:100%;
+    }
+    button:hover { background:#e65c00; }
   </style>
 </head>
 <body>
@@ -35,11 +71,61 @@
         <button type="submit">Send</button>
       </form>
       <p id="contactSuccess" style="display:none; color:lime; margin-top:10px; font-weight:600;">✅ Message sent successfully!</p>
+      <p id="contactError" style="display:none; color:red; margin-top:10px; font-weight:600;">❌ Error sending message. Try again.</p>
       <p>Email: loadedbitesfoodstand@gmail.com</p>
       <p>Phone: 228-290-3138</p>
       <p>Instagram: @loadedbitesfoodstand</p>
     </div>
   </main>
+
+  <script type="module">
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { db } from "./index.js";
+
+    const contactForm = document.getElementById('contactForm');
+    const successMsg = document.getElementById('contactSuccess');
+    const errorMsg = document.getElementById('contactError');
+
+    async function sendEmailNotification(name, email, message) {
+      try {
+        await fetch("https://formspree.io/f/mayzkqkj", { // Replace with your Formspree endpoint
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, message })
+        });
+      } catch (err) {
+        console.error("Error sending email notification:", err);
+      }
+    }
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('contactName').value;
+        const email = document.getElementById('contactEmail').value;
+        const message = document.getElementById('contactMessage').value;
+
+        try {
+          await addDoc(collection(db, "contactMessages"), {
+            name,
+            email,
+            message,
+            createdAt: serverTimestamp()
+          });
+
+          await sendEmailNotification(name, email, message);
+
+          successMsg.style.display = 'block';
+          errorMsg.style.display = 'none';
+          contactForm.reset();
+        } catch (err) {
+          successMsg.style.display = 'none';
+          errorMsg.style.display = 'block';
+          console.error("Error sending message: ", err);
+        }
+      });
+    }
+  </script>
 
   <script type="module" src="index.js"></script>
 </body>
