@@ -2,3 +2,53 @@
   .hero-content { flex-direction: column; }
   .main-text { font-size: 3rem; }
 }
+/* Base styles already apply via your cards */
+
+/* Responsive grid adjustments */
+@media (max-width: 768px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav a, nav select, nav button.logoutBtn {
+    margin: 8px 0;
+    width: 90%;
+    text-align: center;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .card img {
+    max-height: 200px;
+    object-fit: cover;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  nav a, nav select, nav button.logoutBtn {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  .card h2, .card h3, .card p {
+    font-size: 0.95rem;
+  }
+}
