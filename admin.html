@@ -39,7 +39,7 @@
       <a href="index.html">Home</a>
       <a href="menu.html">Menu</a>
       <a href="contact.html">Contact</a>
-      <a href="profile.html">Profile</a>
+      <a href="profile.html" id="profileLink" style="display:none;">Profile</a>
       <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
     </nav>
   </header>
@@ -67,7 +67,6 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
@@ -81,21 +80,27 @@
 
     const adminLink = document.getElementById('adminLink');
     const adminCard = document.getElementById('adminCard');
+    const profileLink = document.getElementById('profileLink');
 
     onAuthStateChanged(auth, (user) => {
-      if (window.location.pathname.includes('admin.html')) {
-        if (user && adminEmails.includes(user.email)) {
+      if (user) {
+        profileLink.style.display = 'inline-block';
+        if (adminEmails.includes(user.email)) {
           adminLink.style.display = 'inline-block';
-          adminCard.style.display = 'block';
-        } else {
-          // Redirect non-admins away from admin.html
-          window.location.href = 'index.html';
-        }
-      } else {
-        if (user && adminEmails.includes(user.email)) {
-          adminLink.style.display = 'inline-block';
+          if (window.location.pathname.includes('admin.html')) {
+            adminCard.style.display = 'block';
+          }
         } else {
           adminLink.style.display = 'none';
+          if (window.location.pathname.includes('admin.html')) {
+            window.location.href = 'index.html';
+          }
+        }
+      } else {
+        profileLink.style.display = 'none';
+        adminLink.style.display = 'none';
+        if (window.location.pathname.includes('admin.html')) {
+          window.location.href = 'index.html';
         }
       }
     });
