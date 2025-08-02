@@ -39,6 +39,17 @@
       border-radius: 10px;
       margin-bottom: 10px;
     }
+    button.logoutBtn {
+      margin-left: 15px;
+      background:#ff6600;
+      border:none;
+      padding:8px 16px;
+      border-radius:8px;
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+    }
+    button.logoutBtn:hover { background:#e65c00; }
   </style>
 </head>
 <body>
@@ -48,8 +59,9 @@
       <a href="index.html">Home</a>
       <a href="menu.html">Menu</a>
       <a href="contact.html">Contact</a>
-      <a href="profile.html" id="profileBtn" style="display:none;">Profile</a>
-      <select id="formSelect"></select>
+      <a href="profile.html" id="profileLink" style="display:none;">Profile</a>
+      <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
+      <button class="logoutBtn" id="logoutBtn" style="display:none;">Logout</button>
     </nav>
   </header>
 
@@ -70,6 +82,44 @@
     </div>
   </main>
 
-  <script type="module" src="index.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
+      authDomain: "loadedbitesorders.firebaseapp.com",
+      projectId: "loadedbitesorders"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const adminEmails = ["loadedbitesfoodstand@gmail.com"];
+
+    const profileLink = document.getElementById('profileLink');
+    const adminLink = document.getElementById('adminLink');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        profileLink.style.display = 'inline-block';
+        logoutBtn.style.display = 'inline-block';
+        if (adminEmails.includes(user.email)) {
+          adminLink.style.display = 'inline-block';
+        }
+      } else {
+        profileLink.style.display = 'none';
+        adminLink.style.display = 'none';
+        logoutBtn.style.display = 'none';
+      }
+    });
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async () => {
+        await signOut(auth);
+        window.location.href = 'index.html';
+      });
+    }
+  </script>
 </body>
 </html>
