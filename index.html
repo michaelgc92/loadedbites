@@ -68,6 +68,12 @@
       <a href="contact.html">Contact</a>
       <a href="profile.html" id="profileLink" style="display:none;">Profile</a>
       <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
+      <select id="formSelect">
+        <option value="">Account</option>
+        <option value="login">Login</option>
+        <option value="signup">Sign Up</option>
+        <option value="forgot">Forgot Password</option>
+      </select>
       <button class="logoutBtn" id="logoutBtn" style="display:none;">Logout</button>
     </nav>
   </header>
@@ -106,6 +112,7 @@
     const profileLink = document.getElementById('profileLink');
     const adminLink = document.getElementById('adminLink');
     const logoutBtn = document.getElementById('logoutBtn');
+    const formSelect = document.getElementById('formSelect');
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -125,6 +132,14 @@
       logoutBtn.addEventListener('click', async () => {
         await signOut(auth);
         window.location.href = 'index.html';
+      });
+    }
+
+    if (formSelect) {
+      formSelect.addEventListener('change', () => {
+        if (formSelect.value === 'login') window.location.href = 'login.html';
+        if (formSelect.value === 'signup') window.location.href = 'signup.html';
+        if (formSelect.value === 'forgot') window.location.href = 'forgot.html';
       });
     }
   </script>
