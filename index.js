@@ -1,4 +1,4 @@
-// admin.js - Admin Dashboard for Loaded Bites
+// admin.js - Admin Dashboard for Loaded Bites with Success/Error banners
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
@@ -22,6 +22,23 @@ const db = getFirestore(app);
 
 // Elements
 const ordersTable = document.getElementById('adminOrders');
+const messageBanner = document.createElement('div');
+messageBanner.style.position = 'fixed';
+messageBanner.style.top = '20px';
+messageBanner.style.right = '20px';
+messageBanner.style.padding = '12px 20px';
+messageBanner.style.borderRadius = '8px';
+messageBanner.style.color = 'white';
+messageBanner.style.fontWeight = '600';
+messageBanner.style.display = 'none';
+document.body.appendChild(messageBanner);
+
+function showMessage(text, type) {
+  messageBanner.innerText = text;
+  messageBanner.style.backgroundColor = type === 'success' ? 'green' : 'red';
+  messageBanner.style.display = 'block';
+  setTimeout(() => messageBanner.style.display = 'none', 3000);
+}
 
 // Only allow admin emails
 const adminEmails = ["loadedbitesfoodstand@gmail.com"];
@@ -48,17 +65,25 @@ onAuthStateChanged(auth, async (user) => {
     // Handle Complete/Delete
     document.querySelectorAll('.completeBtn').forEach(btn => {
       btn.addEventListener('click', async () => {
-        await updateDoc(doc(db, "orders", btn.dataset.id), { status: "Completed" });
-        alert("Order marked as completed!");
-        location.reload();
+        try {
+          await updateDoc(doc(db, "orders", btn.dataset.id), { status: "Completed" });
+          showMessage("✅ Order marked as completed!", 'success');
+          setTimeout(() => location.reload(), 1500);
+        } catch (error) {
+          showMessage("❌ Error updating order: " + error.message, 'error');
+        }
       });
     });
 
     document.querySelectorAll('.deleteBtn').forEach(btn => {
       btn.addEventListener('click', async () => {
-        await deleteDoc(doc(db, "orders", btn.dataset.id));
-        alert("Order deleted!");
-        location.reload();
+        try {
+          await deleteDoc(doc(db, "orders", btn.dataset.id));
+          showMessage("✅ Order deleted!", 'success');
+          setTimeout(() => location.reload(), 1500);
+        } catch (error) {
+          showMessage("❌ Error deleting order: " + error.message, 'error');
+        }
       });
     });
   } else {
