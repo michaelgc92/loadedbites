@@ -3,72 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loaded Bites | Thank You</title>
+  <title>Loaded Bites | Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      height: 100vh;
-    }
+    main { padding: 20px; }
     .card {
       background: rgba(255,102,0,0.7);
       backdrop-filter: blur(15px);
       border-radius: 15px;
-      padding: 40px;
+      padding: 30px;
       color: white;
       box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
+      max-width: 900px;
+      margin: auto;
     }
-    .card img {
-      width: 140px;
-      margin-bottom: 20px;
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background: rgba(0,0,0,0.4); }
+    button {
+      background:#ff6600; border:none; padding:8px 14px; border-radius:6px; color:white; font-weight:600; cursor:pointer;
     }
-    a.button-link {
-      display: inline-block;
-      margin-top: 20px;
-      background:#ff6600; 
-      padding:12px 20px; 
-      border-radius:8px; 
-      color:white; 
-      font-weight:600; 
-      text-decoration:none;
-      transition: background 0.3s;
-    }
-    a.button-link:hover { background:#e65c00; }
-    .socials {
-      margin-top: 20px;
-    }
-    .socials a {
-      color: white;
-      font-size: 28px;
-      margin: 0 12px;
-      transition: transform 0.3s, color 0.3s;
-    }
-    .socials a:hover {
-      transform: scale(1.2);
-      color: #ffcc66;
-    }
+    button:hover { background:#e65c00; }
   </style>
 </head>
 <body>
   <main>
     <div class="card">
-      <img src="logo.png" alt="Loaded Bites Logo">
-      <h2>Thank You!</h2>
-      <p>Your message has been sent successfully. We'll get back to you soon.</p>
-      <a href="index.html" class="button-link">Return Home</a>
-      <div class="socials">
-        <a href="https://instagram.com/loadedbitesfoodstand" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-      </div>
+      <h2>Admin Dashboard</h2>
+      <p>Manage Loaded Bites Orders</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Pickup Time</th>
+            <th>Order Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminOrders">
+          <tr><td colspan="4">Loading orders...</td></tr>
+        </tbody>
+      </table>
     </div>
   </main>
+
+  <script type="module" src="admin.js"></script>
 </body>
 </html>
