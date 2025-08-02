@@ -6,6 +6,7 @@
   <title>Loaded Bites | Contact</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     main { display: flex; justify-content: center; align-items: center; padding: 20px; }
     .card {
@@ -31,8 +32,16 @@
     }
     button:hover { background:#e65c00; }
     .socials { margin-top: 20px; }
-    .socials img { width: 32px; height: 32px; filter: brightness(0) invert(1); margin: 0 10px; transition: transform 0.3s; }
-    .socials img:hover { transform: scale(1.1); }
+    .socials a {
+      color: white;
+      font-size: 28px;
+      margin: 0 12px;
+      transition: transform 0.3s, color 0.3s;
+    }
+    .socials a:hover {
+      transform: scale(1.2);
+      color: #ffcc66;
+    }
   </style>
 </head>
 <body>
@@ -56,8 +65,8 @@
         <button type="submit">Send</button>
       </form>
       <div class="socials">
-        <a href="https://instagram.com/loadedbitesfoodstand" target="_blank"><img src="instagram.png" alt="Instagram"></a>
-        <a href="https://facebook.com" target="_blank"><img src="facebook.png" alt="Facebook"></a>
+        <a href="https://instagram.com/loadedbitesfoodstand" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
       </div>
     </div>
   </main>
