@@ -42,17 +42,47 @@
     button:hover { background: rgba(230,92,0,0.9); }
     a { color: #ffcc66; text-decoration: none; font-size: 0.9rem; }
     a:hover { text-decoration: underline; }
+    .success-card {
+      display: none;
+      background: rgba(0,128,0,0.7);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 30px;
+      color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      max-width: 400px;
+      text-align: center;
+    }
+    .success-card h2 { margin-bottom: 20px; }
+    .success-card a.button-link {
+      display: inline-block;
+      margin-top: 15px;
+      background:#ff6600;
+      padding:12px 20px;
+      border-radius:8px;
+      color:white;
+      font-weight:600;
+      text-decoration:none;
+      transition: background 0.3s;
+    }
+    .success-card a.button-link:hover { background:#e65c00; }
   </style>
 </head>
 <body>
   <main>
-    <div class="card">
+    <div class="card" id="forgotCard">
       <h2>Reset Your Password</h2>
       <form id="forgotForm">
         <input type="email" id="email" placeholder="Enter your email" required>
         <button type="submit">Send Reset Link</button>
       </form>
       <p>Remembered your password? <a href="login.html">Login</a></p>
+    </div>
+
+    <div class="success-card" id="successCard">
+      <h2>Check Your Email</h2>
+      <p>✅ We've sent you a password reset link. Please check your inbox.</p>
+      <a href="login.html" class="button-link">Return to Login</a>
     </div>
   </main>
 
@@ -70,13 +100,16 @@
     const auth = getAuth(app);
 
     const forgotForm = document.getElementById('forgotForm');
+    const forgotCard = document.getElementById('forgotCard');
+    const successCard = document.getElementById('successCard');
+
     forgotForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email').value;
       try {
         await sendPasswordResetEmail(auth, email);
-        alert('✅ Password reset link sent! Check your email.');
-        window.location.href = 'login.html';
+        forgotCard.style.display = 'none';
+        successCard.style.display = 'block';
       } catch (error) {
         alert('❌ Failed to send reset email: ' + error.message);
       }
