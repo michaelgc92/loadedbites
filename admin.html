@@ -45,7 +45,7 @@
   </header>
 
   <main>
-    <div class="card">
+    <div class="card" id="adminCard" style="display:none;">
       <h2>Admin Dashboard</h2>
       <p>Manage Loaded Bites Orders</p>
       <table>
@@ -64,17 +64,39 @@
     </div>
   </main>
 
-  <script type="module" src="admin.js"></script>
   <script type="module">
-    import { auth } from './index.js';
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw8_X1WR4sorkQmyVgSBAv6J9Xwt33OXs",
+      authDomain: "loadedbitesorders.firebaseapp.com",
+      projectId: "loadedbitesorders"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const adminEmails = ["loadedbitesfoodstand@gmail.com"];
+
     const adminLink = document.getElementById('adminLink');
+    const adminCard = document.getElementById('adminCard');
 
     onAuthStateChanged(auth, (user) => {
-      if (user && adminEmails.includes(user.email)) {
-        adminLink.style.display = 'inline-block';
+      if (window.location.pathname.includes('admin.html')) {
+        if (user && adminEmails.includes(user.email)) {
+          adminLink.style.display = 'inline-block';
+          adminCard.style.display = 'block';
+        } else {
+          // Redirect non-admins away from admin.html
+          window.location.href = 'index.html';
+        }
+      } else {
+        if (user && adminEmails.includes(user.email)) {
+          adminLink.style.display = 'inline-block';
+        } else {
+          adminLink.style.display = 'none';
+        }
       }
     });
   </script>
