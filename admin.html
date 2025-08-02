@@ -26,9 +26,24 @@
       background:#ff6600; border:none; padding:8px 14px; border-radius:6px; color:white; font-weight:600; cursor:pointer;
     }
     button:hover { background:#e65c00; }
+    nav { text-align: center; margin-bottom: 20px; }
+    nav a {
+      color: white; font-weight:600; margin: 0 12px; text-decoration: none;
+    }
+    nav a:hover { color: #ffcc66; }
   </style>
 </head>
 <body>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="contact.html">Contact</a>
+      <a href="profile.html">Profile</a>
+      <a href="admin.html" id="adminLink" style="display:none;">Admin</a>
+    </nav>
+  </header>
+
   <main>
     <div class="card">
       <h2>Admin Dashboard</h2>
@@ -50,5 +65,18 @@
   </main>
 
   <script type="module" src="admin.js"></script>
+  <script type="module">
+    import { auth } from './index.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const adminEmails = ["loadedbitesfoodstand@gmail.com"];
+    const adminLink = document.getElementById('adminLink');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user && adminEmails.includes(user.email)) {
+        adminLink.style.display = 'inline-block';
+      }
+    });
+  </script>
 </body>
 </html>
